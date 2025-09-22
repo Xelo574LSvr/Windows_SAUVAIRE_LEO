@@ -82,7 +82,7 @@ public class Image {
 
     
 
-    
+
 
     public static Image read_txt_token(String filename) throws IOException {
         // Lire tout le fichier
@@ -162,8 +162,72 @@ public class Image {
 
 
 
+    /**
+     * Sauvegarde l'image au format PPM binaire (P6)
+     * @param filename
+     * @throws IOException
+     */
+    public void save_bin (String filename) throws IOException {
+        FileOutPutStream fs = new FileOutPutStream(filename);
+        // En-tête
+        String header = "P6\n" + width + " " + height + "\n255\n";
+        fos.write(header.getBytes());
 
-    static public save_bin (String filename) throws IOException {
-        FileInputStream fs = new FileInputStream(filename);
+        // Pixels (R, G, B en octets)
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                fos.write((byte) pixels[y][x][0]); // R
+                fos.write((byte) pixels[y][x][1]); // G
+                fos.write((byte) pixels[y][x][2]); // B
+            }
+        }
+    }
+
+
+
+
+
+    /**
+     * Lecture d'une image au format PPM binaire (P6)
+     */
+    public static Image read_bin(String filename) throws IOException {
+        try (FileInputStream fis = new FileInputStream(filename)) {
+            // Lire l'en-tête en texte
+            StringBuilder header = new StringBuilder();
+            int c;
+            int newlines = 0;
+            while (newlines < 3 && (c = fis.read()) != -1) {
+                header.append((char) c);
+                if (c == '\n') {
+                    newlines++;
+                }
+            }
+
+            String[] parts = header.toString().trim().split("\\s+");
+            if (!parts[0].equals("P6")) {
+                throw new IOException("Format PPM non supporté : " + parts[0]);
+            }
+
+            int width = Integer.parseInt(parts[1]);
+            int height = Integer.parseInt(parts[2]);
+            int maxVal = Integer.parseInt(parts[3]); // normalement 255
+
+            // Lire les pixels bruts
+            byte[] raw = fis.readAllBytes();
+            if (raw.length < width * height * 3) {
+                throw new IOException("Fichier Incomplet !");
+            }
+
+            Image img = new Image(width, height);
+            int idx = 0;
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    int r = raw[idx++] & 0xFF; // convertir byte signé -> 0..255
+                    int g = raw[idx++] & 0xFF;
+                    int b = raw[idx++] & 0xFF;
+                }
+            }
+        }
+        return img;
     }
 }
