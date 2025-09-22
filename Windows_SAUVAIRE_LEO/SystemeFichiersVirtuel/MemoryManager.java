@@ -83,10 +83,14 @@ public class MemoryManager {
     }
 
     public void saveToFile() throws IOException {
-            // Complété la sauvegarde du system avec FileOutputStream
+            FileOutputStream fos = new FileOutPutStream("memfs.raw");
+            fos.write(filesystemMemory);
+            fos.close();
     }
 
     public void loadFromFile() throws IOException {
-            // Complété la sauvegarde du system avec FileInputStream
+            FileInputStream fis = new FileInputStream("memfs.raw");
+            fis.read(filesystemMemory);
+            fis.close();
     }
 }
