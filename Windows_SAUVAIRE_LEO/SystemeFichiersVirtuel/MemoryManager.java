@@ -18,10 +18,10 @@ public class MemoryManager {
     public static final int MAX_INODES = INODE_TABLE_SIZE / INODE_SIZE; // => 508
 
     // CONTRAINTE : Un seul tableau pour TOUT le système de fichiers
-    private byte[] filesystemMemory;
+    private byte[] memory;
 
     public MemoryManager() {
-        this.filesystemMemory = new byte[TOTAL_MEMORY];
+        this.memory = new byte[TOTAL_MEMORY];
         initializeFilesystem();
     }
 
@@ -39,18 +39,18 @@ public class MemoryManager {
 
     private void writeSuperblock() {
         String signature = "Myfs1.0";
-        System.arraycopy(signature, 0, filesystemMemory, 0, Math.max(signature.length, 28));
+        System.arraycopy(signature, 0, memory, 0, Math.max(signature.length, 28));
 
         //  int [] parameters = new int[] {
         //      BLOCK_SIZE,
         //      TOTAL_MEMORY
         //  };
 
-        //  System.arraycopy(parameters, 0, filesystemMemory, 0, 4*parameters.length);
+        //  System.arraycopy(parameters, 0, memory, 0, 4*parameters.length);
 
         // copier BLOCK_SIZE
-        Utils.writeInt(filesystemMemory, 28, BLOCK_SIZE);
-        Utils.writeInt(filesystemMemory, 34, TOTAL_MEMORY);
+        Utils.writeInt(memory, 28, BLOCK_SIZE);
+        Utils.writeInt(memory, 34, TOTAL_MEMORY);
     }
 
     public boolean setBlockUsed(int blockNumber, boolean used) {
@@ -74,7 +74,7 @@ public class MemoryManager {
         int bitPosition = blockNumber % 8;
         int offset = BITMAP_OFFSET + byteIndex;
 
-        return (filesystemMemory[offset] >> bitPosition) & 1;
+        return (memory[offset] >> bitPosition) & 1;
     }
 
     public int allocateBlock() {
@@ -84,19 +84,19 @@ public class MemoryManager {
         return -1; // Pas de bloc libre
     }
 
-    public byte[] getFilesystemMemory() {
-        return filesystemMemory;
+    public byte[] getmemory() {
+        return memory;
     }
 
     public void saveToFile() throws IOException {
             FileOutputStream fos = new FileOutPutStream("memfs.raw");
-            fos.write(filesystemMemory);
+            fos.write(memory);
             fos.close();
     }
 
     public void loadFromFile() throws IOException {
             FileInputStream fis = new FileInputStream("memfs.raw");
-            fis.read(filesystemMemory);
+            fis.read(memory);
             fis.close();
     }
 }
