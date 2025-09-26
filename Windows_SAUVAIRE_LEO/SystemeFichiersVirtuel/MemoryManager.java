@@ -63,9 +63,9 @@ public class MemoryManager {
 
 
         if (used) {
-            memory[offset] = (memory[offset] | (1 << bitPosition));
+            memory[offset] = memory[offset] | (1 << bitPosition);
         } else {
-            memory[offset] = (memory[offset] & ~(1 << bitPosition));
+            memory[offset] = memory[offset] & ~(1 << bitPosition);
         }
 
         return true;
@@ -84,9 +84,29 @@ public class MemoryManager {
     }
 
     public int allocateBlock() {
-        // Trouvez un block libre
-                // Dans ce cas, marqué le comme non libre
-                // Et retourner le numéro du block
+        // TODO: Complétez cette méthode étape par étape
+        // ÉTAPE 1: Boucle de la page 129 à la fin (les pages de données)
+        for (int i = 129; i < NUM_BLOCKS; i++) {
+            if (isBlockUsed(i) == 0) { // Bloc libre trouvé !
+                setBlockUsed(i, true); // le marquer comme occupé
+                System.out.println("Le Bloc " + i + " a été alloué."); // L'annoncer à l'utilisateur
+                return i; // Le retourner
+            }
+        }
+        // ÉTAPE 2: Pour chaque page, vérifier si elle est libre
+        // ÉTAPE 3: Si libre, la marquer comme occupée
+        // ÉTAPE 4: Retourner son numéro
+
+        // AIDE: Commencer par cette structure
+        /*
+        for (int i = 129; i < NUM_BLOCKS; i++) {
+            if (isBlockUsed(i) == 0) {  // Bloc libre trouvé !
+                // TODO: Le marquer comme occupé
+                // TODO: L'annoncer à l'utilisateur
+                // TODO: Le retourner
+            }
+        }
+        */
         return -1; // Pas de bloc libre
     }
 
