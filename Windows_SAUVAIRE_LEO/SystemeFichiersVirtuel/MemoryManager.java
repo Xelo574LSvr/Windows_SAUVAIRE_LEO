@@ -53,7 +53,7 @@ public class MemoryManager {
         Utils.writeInt(memory, 34, TOTAL_MEMORY);
     }
 
-    public boolean setBlockUsed(int blockNumber, boolean used) {
+   public boolean setBlockUsed(int blockNumber, boolean used) {
         if (blockNumber < 0 || blockNumber >= NUM_BLOCKS)
             return false;
 
@@ -61,10 +61,16 @@ public class MemoryManager {
         int bitPosition = blockNumber % 8;
         int offset = BITMAP_OFFSET + byteIndex;
 
-              //! Expliquez pourquoi on utilise un décallage de bit ?
+
+        if (used) {
+            memory[offset] = (memory[offset] | (1 << bitPosition));
+        } else {
+            memory[offset] = (memory[offset] & ~(1 << bitPosition));
+        }
 
         return true;
     }
+
 
     public int isBlockUsed(int blockNumber) {
         if (blockNumber < 0 || blockNumber >= NUM_BLOCKS)
