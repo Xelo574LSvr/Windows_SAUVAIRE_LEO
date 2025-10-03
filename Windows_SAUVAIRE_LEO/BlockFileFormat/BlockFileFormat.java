@@ -99,26 +99,47 @@ public class BlockFileFormat {
          */
         public void deserialize(ByteBuffer buffer) {
             //! TODO Lire le type de la section (int)
+            int typeSection = buffer.getInt();
+
             //! TODO Lire le padding (1 octet, à ignorer)
+            int padding = buffer.get();
 
             //! TODO Lire les 250 octets du nom de la section
+            int nomSection;
+
             //! TODO Convertir ces octets en String avec StandardCharsets.UTF_8
+            String nomDeBase = new String(nomSection, StandardCharsets.UTF_8);
+
             //! TODO Nettoyer la chaîne (enlever les caractères nuls et espaces inutiles)
+            String nomNettoye = nomDeBase.replace("\0", "").trim();
 
             //! TODO Lire encore 1 octet de padding
+            padding = buffer.get();
 
             // Lire la suite du buffer comme une liste d'entiers (pointeurs de blocs)
             int remainingInts = buffer.remaining() / 4;
             int[] tmp = new int[remainingInts];
             int count = 0;
 
+            // variable contenant l'entier lu (pour la boucle for)
+            int pointeur;
             for (int i = 0; i < remainingInts; i++) {
                 //! TODO Lire un entier (pointeur)
+                pointeur = buffer.getInt();
+
                 //! TODO Si le pointeur vaut 0, arrêter la boucle (0 = emplacement non utilisé)
+                if (pointeur == 0) {
+                    break;
+                }
+
                 //! TODO Sinon, stocker le pointeur dans le tableau temporaire
+                tmp[i] = pointeur;
             }
 
             //! TODO Copier les pointeurs valides dans dataPointers (taille = count)
+            for (int i = 0; i < tmp.length; i++) {
+                dataPointers[i] = tmp[i];
+            }
         }
     }
 
