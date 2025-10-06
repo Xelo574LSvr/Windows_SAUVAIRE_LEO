@@ -72,7 +72,7 @@ public class ProcessController {
         Process process = executeSimple(command, args);
 
         // Si outputFile n'est pas null, configurer la redirection
-        if (!outputFile != null) {
+        if (outputFile != null) {
             processBuilder.redirectOutput(outputFile);
         }
 
