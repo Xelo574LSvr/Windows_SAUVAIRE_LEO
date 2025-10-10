@@ -29,26 +29,23 @@ public class ProcessController {
      * @throws IOException si le lancement échoue
      */
     public Process executeSimple(String command, String[] args) throws IOException {
-        // Créer un tableau pour stocker la commande complète
-        String[] fullCommand;
 
+        String[] fullCommand = {"ls", "python3", "notepad.exe"};
 
-        // Si args est null, fullCommand = tableau avec juste command
         if (args == null) {
-            fullCommand = new String[] {command};
+            fullCommand = new String[] {command}; 
         } else {
-            // Sinon, fullCommand = tableau avec command + tous les args
-            fullCommand = new String[args.length + 1];
-            fullCommand[0] = command;
-            System.arraycopy(args, 0, fullCommand, 1, args.length);
+            fullCommand = new String[] {command};
+            for (int i = 1; i < args.length; i++) {
+                fullCommand[i] = args[i];
+            }
         }
 
+        processBuilder pb = new ProcessBuilder();
+        pb.command(fullCommand);
 
-        // Configurer le ProcessBuilder avec fullCommand
-        processBuilder.command(fullCommand);
-
-        // Lancer le processus avec processBuilder.start()
-        currentProcess = processBuilder.start();
+        currentProcess = null;
+        pb.start();
 
         System.out.println("Lancement de : " + command);
         return currentProcess;
@@ -68,23 +65,19 @@ public class ProcessController {
     public Process executeWithRedirection(String command, File outputFile, 
                                         File errorFile, String[] args) throws IOException {
 
-        // Utiliser executeSimple pour lancer le processus de base
-        Process process = executeSimple(command, args);
+        // TODO Utiliser executeSimple pour lancer le processus de base
+        Process process = null;
 
-        // Si outputFile n'est pas null, configurer la redirection
-        if (outputFile != null) {
-            processBuilder.redirectOutput(outputFile);
-        }
+        // TODO Si outputFile n'est pas null, configurer la redirection
+        // processBuilder.redirectOutput(outputFile);
 
-        // Si errorFile n'est pas null, configurer la redirection d'erreur
-        if (errorFile != null) {
-            processBuilder.redirectError(errorFile);
-        }
+        // TODO Si errorFile n'est pas null, configurer la redirection d'erreur
+        // processBuilder.redirectError(errorFile);
 
         System.out.println("Redirection configurée - Sortie: " + outputFile + ", Erreur: " + errorFile);
 
-        // Relancer le processus avec les redirections
-        currentProcess = processBuilder.start();
+        // TODO Relancer le processus avec les redirections
+        currentProcess = null;
         return currentProcess;
     }
 
@@ -98,8 +91,7 @@ public class ProcessController {
      * @throws IOException si le lancement échoue
      */
     public Process executeInteractive(String command, String[] args) throws IOException {
-        // Utiliser executeSimple pour lancer le processus
-        executeSimple(command, args);
+        // TODO Utiliser executeSimple pour lancer le processus
         // (Les flux restent accessibles par défaut)
 
         System.out.println("Mode interactif activé pour : " + command);
@@ -162,22 +154,5 @@ public class ProcessController {
     // Getters
     public Process getCurrentProcess() { 
         return currentProcess; 
-    }
-
-    public static void main(String[] args) {
-        ProcessController pc = new ProcessController();
-        try {
-            // test executeSimple
-            pc.executeSimple("notepad.exe", null);
-
-            // TODO test executeWithRedirection
-            
-
-            // TODO test executeInteractive
-            
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
