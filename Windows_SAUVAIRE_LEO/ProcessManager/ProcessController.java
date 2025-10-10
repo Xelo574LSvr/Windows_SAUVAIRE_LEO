@@ -29,23 +29,25 @@ public class ProcessController {
      * @throws IOException si le lancement échoue
      */
     public Process executeSimple(String command, String[] args) throws IOException {
+        // Créer un tableau pour stocker la commande complète
+        String[] fullCommand;
 
-        String[] fullCommand = {"ls", "python3", "notepad.exe"};
-
+        // Si args est null, fullCommand = tableau avec juste command
         if (args == null) {
-            fullCommand = new String[] {command}; 
+        	fullCommand = new String[1];
+        	fullCommand[0] = command;
+
         } else {
-            fullCommand = new String[] {command};
-            for (int i = 1; i < args.length; i++) {
-                fullCommand[i] = args[i];
-            }
+        	fullCommand = new String[args.length + 1];
+            fullCommand[0] = command;
+            System.arraycopy(args, 0, fullCommand, 1, args.length);
         }
+        
+        // Configurer le ProcessBuilder avec fullCommand
+        processBuilder.command(fullCommand);
 
-        processBuilder pb = new ProcessBuilder();
-        pb.command(fullCommand);
-
-        currentProcess = null;
-        pb.start();
+        // Lancer le processus avec processBuilder.start()
+        currentProcess = processBuilder.start();
 
         System.out.println("Lancement de : " + command);
         return currentProcess;
@@ -65,19 +67,23 @@ public class ProcessController {
     public Process executeWithRedirection(String command, File outputFile, 
                                         File errorFile, String[] args) throws IOException {
 
-        // TODO Utiliser executeSimple pour lancer le processus de base
-        Process process = null;
+        // Utiliser executeSimple pour lancer le processus de base
+        Process process = executeSimple(command, args);
 
-        // TODO Si outputFile n'est pas null, configurer la redirection
-        // processBuilder.redirectOutput(outputFile);
+        // Si outputFile n'est pas null, configurer la redirection
+        if (outputFile != null) {
+            processBuilder.redirectOutput(outputFile);
+        }
 
-        // TODO Si errorFile n'est pas null, configurer la redirection d'erreur
-        // processBuilder.redirectError(errorFile);
+        // Si errorFile n'est pas null, configurer la redirection d'erreur
+        if (errorFile != null) {
+            processBuilder.redirectError(errorFile);
+        }
 
         System.out.println("Redirection configurée - Sortie: " + outputFile + ", Erreur: " + errorFile);
 
-        // TODO Relancer le processus avec les redirections
-        currentProcess = null;
+        // Relancer le processus avec les redirections
+        currentProcess = processBuilder.start();
         return currentProcess;
     }
 
