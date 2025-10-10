@@ -163,4 +163,21 @@ public class ProcessController {
     public Process getCurrentProcess() { 
         return currentProcess; 
     }
+
+    public static void main(String[] args) {
+        ProcessController pc = new ProcessController();
+        try {
+            // test executeSimple
+            pc.executeSimple("notepad.exe", null);
+
+            // TODO test executeWithRedirection
+            
+
+            // TODO test executeInteractive
+            
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
