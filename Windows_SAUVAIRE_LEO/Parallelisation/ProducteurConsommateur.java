@@ -19,16 +19,16 @@ public class ProducteurConsommateur {
                 // Attendre une place libre
                 placesLibres.acquire(); 
 
-                // TODO: Acquérir l'accès exclusif au buffer 
+                // Acquérir l'accès exclusif au buffer 
                 mutexBuffer.acquire();
 
-                // TODO: Ajouter l'élément au buffer
+                // Ajouter l'élément au buffer
                 buffer.add(produit);
 
-                // TODO: Libérer l'accès au buffer
+                // Libérer l'accès au buffer
                 mutexBuffer.release();
 
-                // TODO: Signaler qu'un élément est disponible
+                // Signaler qu'un élément est disponible
                 elementsDisponibles.release();
             }
         }
@@ -38,19 +38,19 @@ public class ProducteurConsommateur {
         public void run() {
             for (int i = 0; i < 7; i++) {
 
-                // TODO: Attendre qu'un élément soit disponible
+                // Attendre qu'un élément soit disponible
                 elementsDisponibles.acquire();
 
-                // TODO: Acquérir l'accès exclusif au buffer
+                // Acquérir l'accès exclusif au buffer
                 mutexBuffer.acquire();
 
-                // TODO: Retirer un élément du buffer  
-                buffer.remove(produit);
+                // Retirer un élément du buffer  
+                Integer produit = buffer.poll()
                 
-                // TODO: Libérer l'accès au buffer
+                // Libérer l'accès au buffer
                 mutexBuffer.release();
                 
-                // TODO: Signaler qu'une place est libre
+                // Signaler qu'une place est libre
                 placesLibres.release();
             }
         }
