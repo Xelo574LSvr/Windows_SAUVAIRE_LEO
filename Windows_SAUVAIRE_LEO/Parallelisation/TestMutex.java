@@ -12,7 +12,7 @@ public class TestMutex {
 
         
         for (int i = 0; i < NB_THREADS; i++) {
-            threads[i] = new Thread(new CompteurSecurise.Incrementeur("Thread " + i, NB_INCREMENT));
+            threads[i] = new Thread(new CompteurSecurise.Incrementeur("Thread" + i, NB_INCREMENT));
             threads[i].start();
         }
 
