@@ -13,11 +13,13 @@ public class Calcule extends Thread {
 
     @Override
     public void run() {
+        System.out.println("Thread " + index + " démarré pour " + valeur);
         long tmp = 0;
         for (int i = 0; i < multiplicateur; i++) {
             tmp += valeur * valeur + valeur;
         }
         resultat = tmp;
+        System.out.println("Thread " + index + " fini en " + resultat + " ms");
     }
 
     public long getResultat() {
