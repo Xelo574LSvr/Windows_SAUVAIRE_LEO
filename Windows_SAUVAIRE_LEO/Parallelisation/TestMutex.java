@@ -1,6 +1,6 @@
 public class TestMutex {
-    private static final int NB_THREADS = 20;
-    private static final int NB_INCREMENT = 100000;
+    private static final int NB_THREADS = 9;
+    private static final int NB_INCREMENT = 1111111;
     private static Thread[] threads = new Thread[NB_THREADS];
 
     public static void main(String[] args) throws InterruptedException {
