@@ -9,12 +9,12 @@ public class TestCompteur {
         CompteurDangereux.resetCompteur();
 
         
-        for (int i = 0; i < NOMBRE_THREADS; i++) {
+        for (int i = 0; i < NB_THREADS; i++) {
             threads[i] = new Thread(new CompteurDangereux.Incrementeur("Thread " + i, NB_INCREMENT));
             threads[i].start();
         }
 
-        for (int i = 0; i < NOMBRE_THREADS; i++) {
+        for (int i = 0; i < NB_THREADS; i++) {
             threads[i].join();
         }
 
@@ -24,8 +24,8 @@ public class TestCompteur {
         long attendu = (long)NB_THREADS * NB_INCREMENT;
         int obtenu = CompteurDangereux.getCompteur();
         
-        System.out.println("Résultat attendu : " + attendu);
-        System.out.println("Résultat obtenu  : " + obtenu);
-        System.out.println("Différence       : " + (attendu - obtenu));
+        System.out.println("\nRésultat attendu : " + attendu);
+        System.out.println("Résultat obtenu : " + obtenu);
+        System.out.println("Différence : " + (attendu - obtenu));
     }
 }

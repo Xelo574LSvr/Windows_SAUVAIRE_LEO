@@ -11,12 +11,12 @@ public class TestMutex {
         CompteurSecurise.resetCompteur();
 
         
-        for (int i = 0; i < NOMBRE_THREADS; i++) {
+        for (int i = 0; i < NB_THREADS; i++) {
             threads[i] = new Thread(new CompteurSecurise.Incrementeur("Thread " + i, NB_INCREMENT));
             threads[i].start();
         }
 
-        for (int i = 0; i < NOMBRE_THREADS; i++) {
+        for (int i = 0; i < NB_THREADS; i++) {
             threads[i].join();
         }
 
