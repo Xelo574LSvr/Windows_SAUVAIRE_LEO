@@ -45,7 +45,7 @@ public class ProducteurConsommateur {
                 mutexBuffer.acquire();
 
                 // Retirer un élément du buffer  
-                Integer produit = buffer.poll()
+                
                 
                 // Libérer l'accès au buffer
                 mutexBuffer.release();
